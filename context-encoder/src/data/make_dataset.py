@@ -6,7 +6,10 @@ from dotenv import find_dotenv, load_dotenv
 import os
 import requests
 
+import numpy as np
+
 from PIL import Image
+
 load_dotenv(find_dotenv())
 
 logger = logging.getLogger(__name__)
@@ -34,10 +37,13 @@ def no_name(input_filepath, output_filepath):
 @click.option('--num', default=1000, type=int)
 def generate_imagenet(urls_file, images_dir, num):
     def download_image_resize(url, name):
-        resized_dir = Path(images_dir, 'resized')
-        original_dir = Path(images_dir, 'original')
-        original_dir.mkdir(exist_ok=True)
-        resized_dir.mkdir(exist_ok=True)
+        resized_train_dir = Path(images_dir, 'resized', 'train', '0')
+        resized_val_dir = Path(images_dir, 'resized', 'val', '0')
+        original_dir = Path(images_dir, 'original', '0')
+
+        original_dir.mkdir(parents=True, exist_ok=True)
+        resized_val_dir.mkdir(parents=True, exist_ok=True)
+        resized_train_dir.mkdir(parents=True, exist_ok=True)
 
         try:
             res = requests.get(url)
@@ -49,20 +55,27 @@ def generate_imagenet(urls_file, images_dir, num):
                 return
 
             img = Image.open(str(original_dir.joinpath(name)))
-            img = img.resize((200, 200))
+            img = img.resize((128, 128))
             if img.mode != 'RBG':
                 img = img.convert('RGB')
-            img.save(str(resized_dir.joinpath(name)), 'JPEG')
+            if np.random.random() <= .1:
+                img.save(str(resized_val_dir.joinpath(name)), 'JPEG')
+            else:
+                img.save(str(resized_train_dir.joinpath(name)), 'JPEG')
+
         
         except KeyboardInterrupt:
             import sys
             sys.exit(0)
 
-        except:
+        except Exception as e:
             logger.info('Error downloding image ' + name)
-
-            if resized_dir.joinpath(name).exists():
-                resized_dir.joinpath(name).unlink()
+            if original_dir.joinpath(name).exists():
+                original_dir.joinpath(name).unlink()
+            if resized_val_dir.joinpath(name).exists():
+                resized_val_dir.joinpath(name).unlink()
+            if resized_train_dir.joinpath(name).exists():
+                resized_train_dir.joinpath(name).unlink()
             return
 
     img_path = Path(images_dir)
