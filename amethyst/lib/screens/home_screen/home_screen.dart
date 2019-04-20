@@ -1,5 +1,7 @@
+import 'package:amethyst/router.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -11,7 +13,12 @@ class HomePage extends StatelessWidget {
           child: Material(
             color: Colors.greenAccent,
             child: InkWell( //> Invisible button, with wave animation
-              onTap: () => Navigator.of(context).pushNamed('/home_screen'),
+              onTap: () =>
+                ImagePicker.pickImage(source: ImageSource.camera)
+                  .then((image) {
+                    Router.params['image'] = image;
+                    Navigator.of(context).pushNamed('/editor_screen');
+                  }),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -27,8 +34,13 @@ class HomePage extends StatelessWidget {
           child:Material(
             color: Colors.redAccent,
             child: InkWell( //> Invisible button, with wave animation
-              onTap: () => Navigator.of(context).pushNamed('/home_screen'),
-              child: new Column(
+              onTap: () =>
+                ImagePicker.pickImage(source: ImageSource.gallery)
+                  .then((image) {
+                    Router.params['image'] = image;
+                    Navigator.of(context).pushNamed('/editor_screen');
+                  }),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Icon(FontAwesomeIcons.images, color: Colors.white, size: 60.0,),
@@ -42,4 +54,13 @@ class HomePage extends StatelessWidget {
       ],
     );
   }
+}
+
+Future takeImageAndNavigate() async {
+  var image =  await ImagePicker.pickImage(source: ImageSource.camera);
+}
+
+Future getImageAndNavigate() async {
+  var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
 }
