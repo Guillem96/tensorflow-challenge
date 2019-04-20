@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -14,7 +15,8 @@ class HomePage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Icon(Icons.photo_camera, color: Colors.white, size: 60.0,),
+                  Icon(FontAwesomeIcons.cameraRetro, color: Colors.white, size: 60.0,),
+                  Padding(padding: EdgeInsets.only(bottom: 10),),
                   Text("Take a photo!", style: TextStyle(color: Colors.white, fontSize: 50.0, fontWeight: FontWeight.bold)),
                 ],
               )
@@ -29,7 +31,8 @@ class HomePage extends StatelessWidget {
               child: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Icon(Icons.photo_album, color: Colors.white, size: 60.0,),
+                  Icon(FontAwesomeIcons.images, color: Colors.white, size: 60.0,),
+                  Padding(padding: EdgeInsets.only(bottom: 10),),
                   Text("Pick a photo!", style: TextStyle(color: Colors.white, fontSize: 50.0, fontWeight: FontWeight.bold)),
                 ],
               )
