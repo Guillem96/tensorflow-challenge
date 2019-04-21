@@ -1,10 +1,10 @@
-import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImageViewer extends StatefulWidget {
-  File image;
+  final Image image;
 
   ImageViewer(this.image);
 

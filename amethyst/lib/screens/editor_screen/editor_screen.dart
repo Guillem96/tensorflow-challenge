@@ -1,33 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:amethyst/screens/editor_screen/widgets/image_viewer.dart';
-import 'package:amethyst/screens/editor_screen/widgets/painter.dart';
+import 'package:amethyst/screens/editor_screen/widgets/painter/draw_bar.dart';
+import 'package:amethyst/screens/editor_screen/widgets/painter/painter.dart';
+import 'package:amethyst/screens/editor_screen/widgets/painter/painter_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-// class EditorScreen extends StatefulWidget {
-//   final File image;
-
-//   EditorScreen(this.image);
-
-//   @override
-//   State<StatefulWidget> createState() {
-//     return _EditorScreenState();
-//   }
-// }
-
-// class _EditorScreenState extends State<EditorScreen> {
-
-//   _EditorScreenState();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child: ImageViewer(widget.image),
-//     );
-//   }
-// }
 
 class EditorScreen extends StatefulWidget {
   final File _image;
@@ -45,10 +23,10 @@ class _EditorScreenState extends State<EditorScreen> {
   void initState() {
     super.initState();
     _finished = false;
-    _controller = _Controller();
+    _controller = controller;
   }
 
-  PainterController _Controller() {
+  PainterController get controller {
     PainterController controller = PainterController();
     controller.thickness = 5.0;
     controller.backgroundColor = Colors.transparent;
@@ -65,7 +43,7 @@ class _EditorScreenState extends State<EditorScreen> {
           tooltip: ' Painting',
           onPressed: () => setState(() {
             _finished = false;
-            _controller = _Controller();
+            _controller = controller;
           }),
         ),
       ];
@@ -91,6 +69,7 @@ class _EditorScreenState extends State<EditorScreen> {
       appBar: AppBar(
         title: const Text('Painter Example'),
         actions: actions,
+        backgroundColor: Colors.purpleAccent,
         bottom: PreferredSize(
           child: DrawBar(_controller),
           preferredSize: Size(MediaQuery.of(context).size.width, 30.0),
@@ -140,40 +119,13 @@ class _EditorScreenState extends State<EditorScreen> {
                     child: AspectRatio(
                         aspectRatio: 1.0, child: CircularProgressIndicator()),
                     alignment: Alignment.center,
-                  ));
+                  )
+                );
               }
             },
           )
         ),
       );
     }));
-  }
-}
-
-class DrawBar extends StatelessWidget {
-  final PainterController _controller;
-
-  DrawBar(this._controller);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Flexible(child: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-          return Container(
-              child: Slider(
-            value: _controller.thickness,
-            onChanged: (double value) => setState(() {
-                  _controller.thickness = value;
-                }),
-            min: 1.0,
-            max: 20.0,
-            activeColor: Colors.white,
-          ));
-        })),
-      ],
-    );
   }
 }
