@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:amethyst/screens/editor_screen/widgets/painter/draw_bar.dart';
+import 'package:amethyst/screens/editor_screen/widgets/brush_dialog.dart';
 import 'package:amethyst/screens/editor_screen/widgets/painter/painter.dart';
 import 'package:amethyst/screens/editor_screen/widgets/painter/painter_controller.dart';
+import 'package:amethyst/screens/editor_screen/widgets/painter_actions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,45 +36,10 @@ class _EditorScreenState extends State<EditorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> actions;
-    if (_finished) {
-      actions = <Widget>[
-        IconButton(
-          icon: Icon(Icons.content_copy),
-          tooltip: ' Painting',
-          onPressed: () => setState(() {
-            _finished = false;
-            _controller = controller;
-          }),
-        ),
-      ];
-    } else {
-      actions = <Widget>[
-        IconButton(
-          icon: Icon(Icons.undo),
-          tooltip: 'Undo',
-          onPressed: _controller.undo
-        ),
-        IconButton(
-          icon: Icon(Icons.delete),
-          tooltip: 'Clear',
-          onPressed: _controller.clear
-        ),
-        IconButton(
-          icon: Icon(Icons.check),
-          onPressed: () async => _show(await _controller.finish(widget._image), context)
-        ),
-      ];
-    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Painter Example'),
-        actions: actions,
-        backgroundColor: Colors.purpleAccent,
-        bottom: PreferredSize(
-          child: DrawBar(_controller),
-          preferredSize: Size(MediaQuery.of(context).size.width, 30.0),
-        )
+        backgroundColor: Colors.deepPurpleAccent,
       ),
       body: Center(
         child: Container(
@@ -83,9 +49,15 @@ class _EditorScreenState extends State<EditorScreen> {
               fit: BoxFit.cover,
             ),
           ),
-          child: Painter(_controller)
+          child: Painter(_controller),
         )
-      )
+      ),
+      floatingActionButton: PainterActions(
+        onBrushSize: _updateBrushThickness,
+        onClear: _controller.clear,
+        onUndo: _controller.undo,
+        onOK: () async => _show(await _controller.finish(widget._image), context),
+      ),
     );
   }
 
@@ -127,5 +99,27 @@ class _EditorScreenState extends State<EditorScreen> {
         ),
       );
     }));
+  }
+
+  void _updateBrushThickness() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text('Please select brush thickness'),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: (){ Navigator.of(context).pop(); },
+              child: Text('Ok', style: TextStyle(color: Colors.deepPurpleAccent, fontSize: 20),),
+            ),
+          ],
+          content: SingleChildScrollView(
+            child: BrushThicknessDialog(_controller),
+          ),
+        );
+      },
+      barrierDismissible: false,
+    );
   }
 }
