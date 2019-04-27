@@ -7,6 +7,7 @@ import 'package:amethyst/screens/editor_screen/widgets/painter/painter_controlle
 import 'package:amethyst/screens/editor_screen/widgets/painter_actions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 
 class EditorScreen extends StatefulWidget {
   final File _image;
@@ -17,14 +18,25 @@ class EditorScreen extends StatefulWidget {
 }
 
 class _EditorScreenState extends State<EditorScreen> {
-  bool _finished;
+
+  double containerWidth;
+  double containerHeight;  
+
   PainterController _controller;
 
   @override
   void initState() {
     super.initState();
-    _finished = false;
     _controller = controller;
+    decodeImageFromList(widget._image.readAsBytesSync()).then(
+      (img) {
+        double size = MediaQuery.of(context).size.width;
+
+        setState(() {
+          containerWidth = size * img.height / img.width;
+          containerHeight = size * img.height / img.width;
+        });
+      });
   }
 
   PainterController get controller {
@@ -43,13 +55,15 @@ class _EditorScreenState extends State<EditorScreen> {
       ),
       body: Center(
         child: Container(
+          width: containerWidth,
+          height: containerHeight,
           decoration: BoxDecoration( 
             image: DecorationImage(
               image: FileImage(widget._image),
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
           ),
-          child: Painter(_controller),
+          child: Painter(_controller, containerWidth, containerHeight)
         )
       ),
       floatingActionButton: PainterActions(
@@ -62,9 +76,6 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   void _show(PictureDetails picture, BuildContext context) {
-    setState(() {
-      _finished = true;
-    });
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
       return Scaffold(

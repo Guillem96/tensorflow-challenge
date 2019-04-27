@@ -75,12 +75,6 @@ class PainterController extends ChangeNotifier {
     return _cached;
   }
 
-  Future<ui.Image> decodeImageFromList(Uint8List bytes) async {
-    final ui.Codec codec = await PaintingBinding.instance.instantiateImageCodec(bytes);
-    final ui.FrameInfo frameInfo = await codec.getNextFrame();
-    return frameInfo.image;
-  }
-
   Future<PictureDetails> _render(Size size, File file) async {
     ui.PictureRecorder recorder = ui.PictureRecorder();
     Canvas canvas = Canvas(recorder);

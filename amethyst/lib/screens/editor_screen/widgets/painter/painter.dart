@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class Painter extends StatefulWidget {
   final PainterController painterController;
+  final double width, height;
 
-  Painter(PainterController painterController)
+  Painter(PainterController painterController, this.width, this.height)
       : this.painterController = painterController,
         super(key: ValueKey<PainterController>(painterController));
 
@@ -47,8 +48,8 @@ class _PainterState extends State<Painter> {
     }
     return Container(
       child: child,
-      width: double.infinity,
-      height: double.infinity,
+      width: widget.width,
+      height: widget.height,
     );
   }
 
