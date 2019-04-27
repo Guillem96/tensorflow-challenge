@@ -5,9 +5,9 @@ import 'package:amethyst/screens/editor_screen/widgets/brush_dialog.dart';
 import 'package:amethyst/screens/editor_screen/widgets/painter/painter.dart';
 import 'package:amethyst/screens/editor_screen/widgets/painter/painter_controller.dart';
 import 'package:amethyst/screens/editor_screen/widgets/painter_actions.dart';
+import 'package:amethyst/services/ml_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 
 class EditorScreen extends StatefulWidget {
   final File _image;
@@ -70,7 +70,11 @@ class _EditorScreenState extends State<EditorScreen> {
         onBrushSize: _updateBrushThickness,
         onClear: _controller.clear,
         onUndo: _controller.undo,
-        onOK: () async => _show(await _controller.finish(widget._image), context),
+        onOK: () async {
+          var picture = await _controller.finish(widget._image);
+          await MlService().postImage(await picture.toPNG());
+          _show(picture, context); 
+        },
       ),
     );
   }
