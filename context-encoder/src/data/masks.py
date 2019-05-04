@@ -1,9 +1,13 @@
 import os
+import sys
 import random
 
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 import matplotlib.pyplot as plt
+
+sys.path.append('..')
+from data.masks import *
 
 import dotenv
 dotenv.load_dotenv(dotenv.find_dotenv())
@@ -20,7 +24,7 @@ COLORS = [
     (255, 255, 255)
 ]
 
-def generate_text_mask(original_arr):
+def generate_text_mask(original_arr, colors=COLORS):
     def pick_random_words(n_word=5, text=_LOREM_IPSUM):
         splited_lorem = text.split()
         idx = np.random.randint(0, len(splited_lorem), n_word)
@@ -34,7 +38,7 @@ def generate_text_mask(original_arr):
         curr_pos = 5
         while curr_pos < img.size[1]:
             if np.random.random() > .15:
-                d.text((10, curr_pos), pick_random_words(), font=fnt, fill=random.choice(COLORS))
+                d.text((10, curr_pos), pick_random_words(), font=fnt, fill=random.choice(colors))
             curr_pos += int(fnt_size * 1.1)
 
     masked = original_arr.copy()
@@ -42,44 +46,45 @@ def generate_text_mask(original_arr):
     write_random(mask)
     return np.asarray(mask) / 255.
 
-def drop_pixels(original):
+def drop_pixels(original, colors=COLORS):
     rate = np.random.choice(np.arange(.1, .5, .1))
     random_mask = np.random.random(size=(original.shape[:-1]))
     random_idx = random_mask <= rate
     
     masked = original.copy()
-    masked[random_idx] = np.array(random.choice(COLORS)) / 255.
+    masked[random_idx] = np.array(random.choice(colors)) / 255.
     
     return masked
 
-def drop_pixels_tensor(original_tensor):
+def drop_pixels_tensor(original_tensor, colors=COLORS):
     rate = np.random.choice(np.arange(.1, .5, .1))
     random_mask = np.random.random(size=original_tensor.shape[:-1])
     random_idx = random_mask <= rate
     
     masked = original_tensor.copy()
-    masked[random_idx] = np.array(random.choice(COLORS)) / 255.
+    masked[random_idx] = np.array(random.choice(colors)) / 255.
     
     return masked
 
-def generate_lines_mask(original_arr, min_width=7, max_width=14):
-    n_vertical_lines = np.random.randint(5, 11)
-    n_horizontal_lines = np.random.randint(5, 11)
+def generate_lines_mask(original_arr, min_width=5, max_width=12, colors=COLORS):
+    n_vertical_lines = np.random.randint(4, 9)
+    n_horizontal_lines = np.random.randint(4, 9)
     
+    # Generate horizontal lines random metadata
     hozizontal_lines_pos = np.random.randint(0, original_arr.shape[0], size=n_horizontal_lines)    
     hozizontal_lines_len = np.random.randint(original_arr.shape[0] // 1.5, original_arr.shape[0], size=(n_horizontal_lines))
-    horizontal_lines_colors = [ random.choice(COLORS) for _ in range(n_horizontal_lines)]
+    horizontal_lines_colors = [ random.choice(colors) for _ in range(n_horizontal_lines)]
     horizontal_lines_width = np.random.randint(min_width - 1, max_width + 1, size=n_horizontal_lines)
     
+    # Generate vertical lines random metadata
     vertical_lines_pos = np.random.randint(0, original_arr.shape[1], size=(n_vertical_lines))    
     vertical_lines_len = np.random.randint(original_arr.shape[1] // 1.5, original_arr.shape[1], size=(n_vertical_lines))
-    vertical_lines_colors = [ random.choice(COLORS) for _ in range(n_vertical_lines)]
+    vertical_lines_colors = [ random.choice(colors) for _ in range(n_vertical_lines)]
     vertical_lines_width = np.random.randint(min_width - 1, max_width + 1, size=n_vertical_lines)
 
     masked = original_arr.copy()
     mask = Image.fromarray(np.uint8(masked * 255))
-    
-    color = random.choice(COLORS)
+        
     d = ImageDraw.Draw(mask)
     for i in range(n_horizontal_lines):
         d.line((hozizontal_lines_pos[i], 
