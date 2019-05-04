@@ -1,6 +1,5 @@
 import 'dart:io';
-import 'dart:typed_data';
-
+import 'package:photo_view/photo_view.dart';
 import 'package:amethyst/screens/editor_screen/widgets/brush_dialog.dart';
 import 'package:amethyst/screens/editor_screen/widgets/painter/painter.dart';
 import 'package:amethyst/screens/editor_screen/widgets/painter/painter_controller.dart';
@@ -72,46 +71,31 @@ class _EditorScreenState extends State<EditorScreen> {
         onUndo: _controller.undo,
         onOK: () async {
           var picture = await _controller.finish(widget._image);
-          await MlService().postImage(picture);
-          _show(picture, context); 
+          _show(await MlService().postImage(picture), context); 
         },
       ),
     );
   }
 
-  void _show(PictureDetails picture, BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) {
+  void _show(File picture, BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('View your image'),
+          title: const Text('Painter Example'),
+          backgroundColor: Colors.deepPurpleAccent,
         ),
-        body: Container(
-          alignment: Alignment.center,
-          child: FutureBuilder<Uint8List>(
-            future: picture.toPNG(),
-            builder: (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.done:
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return Image.memory(snapshot.data);
-                  }
-                  break;
-                default:
-                  return Container(
-                      child: FractionallySizedBox(
-                    widthFactor: 0.1,
-                    child: AspectRatio(
-                        aspectRatio: 1.0, child: CircularProgressIndicator()),
-                    alignment: Alignment.center,
-                  )
-                );
-              }
-            },
-          )
-        ),
+        body: Center(
+          child: Container(
+            child : PhotoView(
+              backgroundDecoration: BoxDecoration(
+                color: Colors.white
+              ),
+              minScale: 1.0,
+              maxScale: 1.5,
+              imageProvider: FileImage(picture)
+            ),
+          ),
+        )
       );
     }));
   }

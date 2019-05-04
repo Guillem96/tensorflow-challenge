@@ -2,11 +2,10 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 class PainterController extends ChangeNotifier {
-  Color _drawColor = Color.fromARGB(255, 0, 0, 0);
+  Color _drawColor = Color.fromARGB(255, 255, 0, 255);
   Color _backgroundColor = Color.fromARGB(255, 255, 255, 255);
 
   double _thickness = 1.0;
@@ -119,8 +118,8 @@ class PictureDetails {
   }
 
   Future<String> toBase64() async {
-    var image = await toImage();
-    return base64Encode((await image.toByteData()).buffer.asInt32List());
+    var image = await toPNG();
+    return base64Encode(image);
   }
 }
 
