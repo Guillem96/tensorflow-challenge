@@ -72,7 +72,7 @@ class _EditorScreenState extends State<EditorScreen> {
         onUndo: _controller.undo,
         onOK: () async {
           var picture = await _controller.finish(widget._image);
-          await MlService().postImage(await picture.toPNG());
+          await MlService().postImage(picture);
           _show(picture, context); 
         },
       ),

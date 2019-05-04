@@ -1,3 +1,0 @@
-
-class MlService(object):
-    pass

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
@@ -115,6 +116,11 @@ class PictureDetails {
     return (await image.toByteData(format: ui.ImageByteFormat.png))
         .buffer
         .asUint8List();
+  }
+
+  Future<String> toBase64() async {
+    var image = await toImage();
+    return base64Encode((await image.toByteData()).buffer.asInt32List());
   }
 }
 
