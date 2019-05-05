@@ -48,10 +48,7 @@ class _EditorScreenState extends State<EditorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Painter Example'),
-        backgroundColor: Colors.deepPurpleAccent,
-      ),
+     
       body: Center(
         child: Container(
           width: containerWidth,
@@ -80,10 +77,7 @@ class _EditorScreenState extends State<EditorScreen> {
   void _show(File picture, BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
       return Scaffold(
-        appBar: AppBar(
-          title: const Text('Painter Example'),
-          backgroundColor: Colors.deepPurpleAccent,
-        ),
+      
         body: Center(
           child: Container(
             child : PhotoView(
@@ -95,7 +89,13 @@ class _EditorScreenState extends State<EditorScreen> {
               imageProvider: FileImage(picture)
             ),
           ),
-        )
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(Icons.save),
+          backgroundColor: Colors.deepPurpleAccent,
+          tooltip: "Save",
+        ),
       );
     }));
   }

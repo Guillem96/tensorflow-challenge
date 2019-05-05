@@ -34,3 +34,30 @@ The GAN which is goal is to complete missing parts of images is formed by:
 - **Discriminator**: Based on [Context Encoders: Feature Learning by Inpainting](https://arxiv.org/pdf/1604.07379.pdf)
 
 ## Amethyst architecture 🏰
+
+![Amethyst Srchitecture](img/amethyst_arch.png)
+
+## Flutter Mobile App
+
+### Splash Screen
+
+<img src="img/splash.jpg" width="200" alt="Mobile Splash">
+
+### Image Selector
+
+Select either from camera or gallery
+
+<img src="img/photo_picker.jpg" width="200" alt="Image selector">
+
+### Image Editor
+
+Draw over the unwanted part of the image to delete it
+
+The editor provides diferent actions:
+ 
+- Delete all the draw
+- Undo a line
+- Pick the brush thickness
+- Done
+
+<img src="img/actions.jpg" width="200" alt="Image selector">

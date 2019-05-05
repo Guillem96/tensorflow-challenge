@@ -33,7 +33,7 @@ def generate_text_mask(original_arr):
 
         curr_pos = 5
         while curr_pos < img.size[1]:
-            if np.random.random() > .15:
+            if np.random.random() > .2:
                 d.text((10, curr_pos), pick_random_words(), font=fnt, fill=random.choice(COLORS))
             curr_pos += int(fnt_size * 1.1)
 
@@ -62,9 +62,9 @@ def drop_pixels_tensor(original_tensor):
     
     return masked
 
-def generate_lines_mask(original_arr, min_width=7, max_width=14):
-    n_vertical_lines = np.random.randint(5, 11)
-    n_horizontal_lines = np.random.randint(5, 11)
+def generate_lines_mask(original_arr, min_width=5, max_width=10):
+    n_vertical_lines = np.random.randint(1, 10)
+    n_horizontal_lines = np.random.randint(1, 10)
     
     hozizontal_lines_pos = np.random.randint(0, original_arr.shape[0], size=n_horizontal_lines)    
     hozizontal_lines_len = np.random.randint(original_arr.shape[0] // 1.5, original_arr.shape[0], size=(n_horizontal_lines))
@@ -79,7 +79,6 @@ def generate_lines_mask(original_arr, min_width=7, max_width=14):
     masked = original_arr.copy()
     mask = Image.fromarray(np.uint8(masked * 255))
     
-    color = random.choice(COLORS)
     d = ImageDraw.Draw(mask)
     for i in range(n_horizontal_lines):
         d.line((hozizontal_lines_pos[i], 
