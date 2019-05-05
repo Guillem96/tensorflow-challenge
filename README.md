@@ -63,3 +63,15 @@ The editor provides diferent actions:
 - Done
 
 <img src="img/actions.jpg" width="200" alt="Image selector">
+
+## Image completition as a service
+
+Perform a POST to `https://shrouded-refuge-72036.herokuapp.com/complete-image` with the following JSON body:
+
+```JSON
+{
+    "img": "<image in base64>"
+}
+```
+
+The response is the image completed in base64.

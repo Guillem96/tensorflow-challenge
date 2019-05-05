@@ -16,7 +16,6 @@ class MlService {
     try {
 
       Response response = await dio.post("complete-image", data: { 'img': imageData });
-      print(response.statusCode.toString());
       final base64Image = response.data['predict'];
       final tmpPath = (await getApplicationDocumentsDirectory()).path;
       final file = await File('$tmpPath/tmp.jpg').writeAsBytes(base64Decode(base64Image));
