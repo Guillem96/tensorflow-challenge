@@ -5,7 +5,7 @@ import 'package:amethyst/screens/editor_screen/widgets/painter/painter_controlle
 import 'package:dio/dio.dart';
 
 class MlService {
-  static const String _URL = "http://192.168.1.41:5000/";
+  static const String _URL = "https://shrouded-refuge-72036.herokuapp.com/";
 
   Future<File> postImage(PictureDetails image) async {
     var dio = Dio(BaseOptions(

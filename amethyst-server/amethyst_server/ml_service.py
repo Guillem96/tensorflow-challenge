@@ -1,4 +1,5 @@
 import base64
+import os
 from io import BytesIO
 
 from PIL import Image
@@ -6,15 +7,11 @@ import numpy as np
 
 from gan import create_lsgan
 
-import os
-import dotenv
-dotenv.load_dotenv(r"C:\Users\guill\Desktop\current-projects\tensorflow-challenge\context-encoder\.env")
-
 class MlService(object):
     
     def __init__(self):
         self.lsgan_models = create_lsgan()
-        self.lsgan_models['lsgan'].load_weights(os.environ['MODELS_DIR'] + '/lsgan_multicolor_model.h5')
+        self.lsgan_models['lsgan'].load_weights(os.environ['MODEL_DIR'] + '/lsgan_pink_model.h5')
     
     def _img_preprocess(self, image):
         img = Image.open(BytesIO(base64.b64decode(image))).convert('RGB')

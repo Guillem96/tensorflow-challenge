@@ -25,4 +25,4 @@ def complete_image():
         return jsonify(dict(predict=ml_service.predict(data['img'])))
 
 if __name__ == "__main__":
-    app.run('0.0.0.0', debug=True)
+    app.run('0.0.0.0')

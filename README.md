@@ -10,6 +10,8 @@ Amethyst is an hybrid mobile application (works either on IOS or Android) develo
 
 Example:
 
+![Remove example](context-encoder/reports/figures/sample.png)
+
 ## How it works? 🛠
 
 Amethyst uses a complex GAN architecture to regenerate the drew part of the image. Because of the low compute power and the limited Amethyst uses the lightweight GAN described on this [paper](https://www.dropbox.com/s/e4l19y9ggqqk2yf/0360.pdf?dl=1).
