@@ -32,7 +32,7 @@ The GAN which is goal is to complete missing parts of images is formed by:
 
 ### Base papers for architecture
 
-- **Generator**: The Semantic Encoder is based on (VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION - VGG16)[https://arxiv.org/pdf/1409.1556.pdf] and the decoder is a simple stack of layers formed by convulutional, conv-transpose and elu activation.
+- **Generator**: The Semantic Encoder is based on [VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION - VGG16](https://arxiv.org/pdf/1409.1556.pdf) and the decoder is a simple stack of layers formed by convolutional, conv-transpose and elu activation.
 - **Discriminator**: Based on [Context Encoders: Feature Learning by Inpainting](https://arxiv.org/pdf/1604.07379.pdf)
 
 ## Amethyst architecture 🏰
