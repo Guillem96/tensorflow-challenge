@@ -1,4 +1,4 @@
-# Amethyst💎📸
+# ![banner](img/banner.png)
 
 This repo is the implementation of my project proposal for [Tensorflow 2.0 Challenge](https://tensorflow.devpost.com/).
 
