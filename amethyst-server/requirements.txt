@@ -1,5 +1,5 @@
 Flask
 Flask-CORS
 tensorflow==2.0.0-alpha0
-Pillow==6.0.0
+Pillow==8.2.0
 gunicorn
